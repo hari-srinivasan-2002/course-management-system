@@ -1,7 +1,7 @@
-import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
+import API from "../services/api";
 
-function AddStudent() {
+function StudentForm() {
 
   const [student, setStudent] = useState({
     name: "",
@@ -11,33 +11,53 @@ function AddStudent() {
   });
 
   const handleChange = (e) => {
+
     setStudent({
       ...student,
       [e.target.name]: e.target.value
     });
   };
 
-  // PUT HERE
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    console.log(student);
+    // Validation
+    if (
+      !student.name ||
+      !student.email ||
+      !student.phone ||
+      !student.course
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
 
     try {
-      await axios.post(
-        "http://localhost:9093/students",
-        student
-      );
 
-      alert("Student Added");
+      await API.post("/students", student);
+
+      alert("Student Added Successfully");
+
+      setStudent({
+        name: "",
+        email: "",
+        phone: "",
+        course: ""
+      });
 
     } catch (error) {
+
       console.log(error);
+
+      alert("Failed to Add Student");
     }
   };
 
   return (
-    <div>
+
+    <div className="form-container">
+
       <h2>Add Student</h2>
 
       <form onSubmit={handleSubmit}>
@@ -49,7 +69,7 @@ function AddStudent() {
           value={student.name}
           onChange={handleChange}
         />
-
+  
         <input
           type="email"
           name="email"
@@ -57,6 +77,7 @@ function AddStudent() {
           value={student.email}
           onChange={handleChange}
         />
+
 
         <input
           type="text"
@@ -66,6 +87,8 @@ function AddStudent() {
           onChange={handleChange}
         />
 
+
+
         <input
           type="text"
           name="course"
@@ -74,13 +97,15 @@ function AddStudent() {
           onChange={handleChange}
         />
 
+
         <button type="submit">
           Add Student
         </button>
 
       </form>
+
     </div>
   );
 }
 
-export default AddStudent;
+export default StudentForm;

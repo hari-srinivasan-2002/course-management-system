@@ -1,23 +1,28 @@
 package com.example.Course_Registration.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "course")
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-    private String course_name;
+
+    @Column(name = "course_name")
+    private String courseName;
+
     private double fee;
-    private String trainer_name;
 
-    // GETTERS AND SETTERS
+    @Column(name = "trainer_name")
+    private String trainerName;
 
+    // Default Constructor
+    public Course() {
+    }
+
+    // Getter and Setter for id
     public Long getId() {
         return id;
     }
@@ -26,14 +31,16 @@ public class Course {
         this.id = id;
     }
 
-    public String getCourse_name() {
-        return course_name;
+    // Getter and Setter for courseName
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
+    // Getter and Setter for fee
     public double getFee() {
         return fee;
     }
@@ -42,11 +49,12 @@ public class Course {
         this.fee = fee;
     }
 
-    public String getTrainer_name() {
-        return trainer_name;
+    // Getter and Setter for trainerName
+    public String getTrainerName() {
+        return trainerName;
     }
 
-    public void setTrainer_name(String trainer_name) {
-        this.trainer_name = trainer_name;
+    public void setTrainerName(String trainerName) {
+        this.trainerName = trainerName;
     }
 }

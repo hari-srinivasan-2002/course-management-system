@@ -1,9 +1,8 @@
 package com.example.Course_Registration.controller;
 
 import com.example.Course_Registration.entity.Course;
-
-
 import com.example.Course_Registration.reposiory.courseRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,34 +15,47 @@ public class CourseController {
     @Autowired
     private courseRepository courseRepository;
 
-    // GET
+    // GET ALL COURSES
     @GetMapping("/courses")
     public List<Course> getAllCourses() {
+
         return courseRepository.findAll();
     }
 
-    // POST
+    // ADD COURSE
     @PostMapping("/courses")
-    public Course addCourse(@RequestBody Course course) {
+    public Course addCourse(
+            @RequestBody Course course) {
+
         return courseRepository.save(course);
     }
 
-    // DELETE
+    // DELETE COURSE
     @DeleteMapping("/courses/{id}")
-    public void deleteCourse(@PathVariable Long id) {
+    public void deleteCourse(
+            @PathVariable Long id) {
+
         courseRepository.deleteById(id);
     }
 
-    // UPDATE
+    // UPDATE COURSE
     @PutMapping("/courses/{id}")
-    public Course updateCourse(@PathVariable Long id,
-                               @RequestBody Course updatedCourse) {
+    public Course updateCourse(
+            @PathVariable Long id,
+            @RequestBody Course updatedCourse) {
 
-        Course course = courseRepository.findById(id).orElseThrow();
+        Course course =
+                courseRepository.findById(id)
+                        .orElseThrow();
 
-        course.setCourse_name(updatedCourse.getCourse_name());
-        course.setFee(updatedCourse.getFee());
-        course.setTrainer_name(updatedCourse.getTrainer_name());
+        course.setCourseName(
+                updatedCourse.getCourseName());
+
+        course.setFee(
+                updatedCourse.getFee());
+
+        course.setTrainerName(
+                updatedCourse.getTrainerName());
 
         return courseRepository.save(course);
     }

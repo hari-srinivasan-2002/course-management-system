@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 
-function AddCourse() {
+function CourseForm() {
 
   const [course, setCourse] = useState({
     courseName: "",
@@ -10,6 +10,7 @@ function AddCourse() {
   });
 
   const handleChange = (e) => {
+
     setCourse({
       ...course,
       [e.target.name]: e.target.value
@@ -20,19 +21,39 @@ function AddCourse() {
 
     e.preventDefault();
 
-    await axios.post("http://localhost:9093/courses", course);
+    // Validation
+    if (
+      !course.courseName ||
+      !course.fee ||
+      !course.trainerName
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
 
-    alert("Course Added");
+    try {
 
-    setCourse({
-      courseName: "",
-      fee: "",
-      trainerName: ""
-    });
+      await API.post("/courses", course);
+
+      alert("Course Added Successfully");
+
+      setCourse({
+        courseName: "",
+        fee: "",
+        trainerName: ""
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Failed to Add Course");
+    }
   };
 
   return (
-    <div>
+
+    <div className="form-container">
 
       <h2>Add Course</h2>
 
@@ -41,7 +62,7 @@ function AddCourse() {
         <input
           type="text"
           name="courseName"
-          placeholder="Course Name"
+          placeholder="Enter Course Name"
           value={course.courseName}
           onChange={handleChange}
         />
@@ -49,7 +70,7 @@ function AddCourse() {
         <input
           type="number"
           name="fee"
-          placeholder="Fee"
+          placeholder="Enter Fee"
           value={course.fee}
           onChange={handleChange}
         />
@@ -57,12 +78,14 @@ function AddCourse() {
         <input
           type="text"
           name="trainerName"
-          placeholder="Trainer Name"
+          placeholder="Enter Trainer Name"
           value={course.trainerName}
           onChange={handleChange}
         />
 
-        <button type="submit">Add Course</button>
+        <button type="submit">
+          Add Course
+        </button>
 
       </form>
 
@@ -70,4 +93,4 @@ function AddCourse() {
   );
 }
 
-export default AddCourse;
+export default CourseForm;
